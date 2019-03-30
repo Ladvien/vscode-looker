@@ -1,7 +1,7 @@
 {
     "name": "looker",
     "displayName": "looker",
-    "description": "IDE tools for LookML development.",
+    "description": "LookML development tools.",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.32.0"
@@ -18,7 +18,7 @@
         }],
         "grammars": [{
             "language": "lookml",
-            "scopeName": "source.lkml",
+            "scopeName": "source.lookml",
             "path": "./syntaxes/lookml.tmLanguage.json"
         }]
     }
