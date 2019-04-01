@@ -19,7 +19,11 @@
         "grammars": [{
             "language": "lookml",
             "scopeName": "source.lkml",
-            "path": "./syntaxes/lookml.tmLanguage.json"
-        }]
+            "path": "./syntaxes/lookml.tmLanguage.json",
+            "embeddedLanguages": {
+                "meta.embedded.block.sql": "source.sql"
+            }
+        }
+    ]
     }
 }
