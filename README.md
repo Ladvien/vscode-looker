@@ -1,5 +1,5 @@
 # Looker Visual Studio Code Extension
-A Visual Studio Code extension meant to aid in the development of LookML, Looker's custom markup language.
+A Visual Studio Code extension meant to aid in the development of LookML -- [Looker's](https://looker.com/product/business-intelligence) custom markup language.
 * [What is LookML?](https://docs.looker.com/data-modeling/learning-lookml/what-is-lookml)
 
 
