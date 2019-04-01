@@ -6,7 +6,7 @@ A Visual Studio Code extension meant to aid in the development of LookML -- [Loo
 ## Features
 
 ### Implemented:
-* Syntax highlighting, with embedded SQL
+* Syntax highlighting with embedded SQL
   
 ![](https://raw.githubusercontent.com/Ladvien/vscode-looker/master/docs/lookml-example.png)
 
