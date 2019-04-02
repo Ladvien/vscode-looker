@@ -9,13 +9,14 @@ import { Keytar } from './utils/keytar';
 export function activate(context: vscode.ExtensionContext) {
 
 	let keytar = Keytar.tryCreate();
-	console.log(keytar);
 
 	console.log('Congratulations, your extension "looker" is now active!');
 
-
-	let disposable = vscode.commands.registerCommand('looker.sayHello', () => {
-		vscode.window.showInformationMessage('asdasd World!');
+	let disposable = vscode.commands.registerCommand('looker.sayHello', async () => {
+		if (keytar) {
+			let pass = await keytar.getPassword('service_test', 'account_test');
+			console.log(pass);
+		}
 	});
 
 	context.subscriptions.push(disposable);
