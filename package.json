@@ -17,7 +17,7 @@
         "commands": [
             {
                 "command": "looker.savePassword",
-                "title": "Store Looker API Secret"
+                "title": "Save Looker API Secret"
             },
             {
                 "command": "looker.sayHello",

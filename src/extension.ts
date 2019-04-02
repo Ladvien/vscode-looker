@@ -1,25 +1,56 @@
-
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Keytar } from './utils/keytar';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	let keytar = Keytar.tryCreate();
 
 	console.log('Congratulations, your extension "looker" is now active!');
 
-	let disposable = vscode.commands.registerCommand('looker.sayHello', async () => {
-		if (keytar) {
-			let pass = await keytar.getPassword('service_test', 'account_test');
-			console.log(pass);
-		}
+	let savePassword = vscode.commands.registerCommand('looker.savePassword', async () => {
+
+		// TODO: Move constants to package.json.
+		await storeCredentials('Looker', 'Id').then((value: any) =>{
+			if (value['success']) {
+				vscode.window.showInformationMessage(value['success']);
+			} else {
+				vscode.window.showErrorMessage(value['error']);
+			}
+		});
+		await storeCredentials('Looker', 'Secret').then((value: any) => {
+			if (value['success']) {
+				vscode.window.showInformationMessage(value['success']);
+			} else {
+				vscode.window.showErrorMessage(value['error']);
+			}
+		});
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(savePassword
+						  );
+}
+
+function storeCredentials(servcice: string, credentialType: string) {
+	return new Promise(function(resolve, reject) {
+		let keytar = Keytar.tryCreate();
+
+		let options: vscode.InputBoxOptions = {
+			'prompt': `Please enter your Looker API ${credentialType}`,
+			'password': true,
+			'placeHolder': `Looker API ${credentialType}...`
+		};
+
+		vscode.window.showInputBox(options).then(async value => {
+			if (keytar) {
+				if (value) {
+					await keytar.setPassword(servcice, credentialType, value);
+					resolve({'success': `Looker ${credentialType} stored succesfully.`});
+				} else {
+					reject({'error': `Could not store ${credentialType}`});
+				}
+			} else {
+				reject({'error': 'Keytar not found.  Unable to securely manage API credentials.'});
+			}
+		});
+	});		
 }
 
 // this method is called when your extension is deactivated
