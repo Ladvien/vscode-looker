@@ -7,6 +7,7 @@ A Visual Studio Code extension meant to aid in the development of LookML -- [Loo
 
 ### Implemented:
 * Syntax highlighting with embedded SQL
+* Storing and retrieval of Looker API credentials.
   
 ![](https://raw.githubusercontent.com/Ladvien/vscode-looker/master/docs/lookml-example.png)
 
