@@ -1,31 +1,44 @@
 import * as vscode from 'vscode';
 import { Keytar } from './utils/keytar';
 
+var lookerId = '';
+var lookerSecret = '';
+
+const serviceKey = 'Looker';
+const accountKey = 'Id';
+const secretKey = 'Secret';
+
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('Congratulations, your extension "looker" is now active!');
+	vscode.window.showInformationMessage('Welcome good Looker!');
+	
+	// Retrieve API credentials, if stored.
+	getLookerAPICredentials().then((result: any) => {
+		vscode.window.showInformationMessage(result['success']);
+	}).catch((reason) => {
+		vscode.window.showErrorMessage(reason['error']);
+	});
 
+	// Commands
 	let savePassword = vscode.commands.registerCommand('looker.savePassword', async () => {
-
 		// TODO: Move constants to package.json.
-		await storeCredentials('Looker', 'Id').then((value: any) =>{
+		await storeCredentials(serviceKey, accountKey).then((value: any) =>{
 			if (value['success']) {
 				vscode.window.showInformationMessage(value['success']);
-			} else {
-				vscode.window.showErrorMessage(value['error']);
 			}
+		}).catch((reason) => {
+			vscode.window.showErrorMessage(reason['error']);
 		});
-		await storeCredentials('Looker', 'Secret').then((value: any) => {
+		await storeCredentials(serviceKey, secretKey).then((value: any) => {
 			if (value['success']) {
 				vscode.window.showInformationMessage(value['success']);
-			} else {
-				vscode.window.showErrorMessage(value['error']);
 			}
+		}).catch((reason) => {
+			vscode.window.showErrorMessage(reason['error']);
 		});
 	});
 
-	context.subscriptions.push(savePassword
-						  );
+	context.subscriptions.push(savePassword);
 }
 
 function storeCredentials(servcice: string, credentialType: string) {
@@ -51,6 +64,28 @@ function storeCredentials(servcice: string, credentialType: string) {
 			}
 		});
 	});		
+}
+
+function getLookerAPICredentials() {
+	return new Promise(async function(resolve, reject) {
+		let keytar = Keytar.tryCreate();
+		if (keytar){
+			await keytar.getPassword(serviceKey, accountKey).then((result) => {
+				lookerId = result || '';
+				if (lookerId === '') {
+					reject({'error': 'Unable to retrieve Looker API Id.'});
+				}
+			});
+			await keytar.getPassword(serviceKey, secretKey).then((result) => {
+				lookerSecret = result || '';
+				if (lookerSecret === '') {
+					reject({'error': 'Unable to retrieve Looker API Secret.'});
+				}
+			});
+			resolve({'success': 'Found Looker API credentials in keychain.'});
+		}
+	});
+		
 }
 
 // this method is called when your extension is deactivated
