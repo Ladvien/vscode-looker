@@ -20,8 +20,8 @@
                 "title": "Save Looker API Secret"
             },
             {
-                "command": "looker.sayHello",
-                "title": "Say Hello"
+                "command": "looker.apiLogin",
+                "title": "Log in to Looker API."
             }
         ],
         "languages": [
@@ -63,7 +63,12 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
+        "@types/request": "^2.48.1",
+        "@types/request-promise-native": "^1.0.15",
+        "axios": "^0.18.0",
         "keytar": "^4.4.1",
+        "request": "^2.88.0",
+        "request-promise-native": "^1.0.7",
         "vscode-azureextensionui": "^0.23.0"
     }
 }
