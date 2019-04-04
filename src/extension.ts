@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as glob from 'glob';
 import { Keytar } from './utils/keytar';
 import Axios from 'axios';
+import { resolve } from 'dns';
 
 var lookerId = '';
 var lookerSecret = '';
@@ -16,8 +19,16 @@ const lookerUrlKey = 'Looker Server URL';
 const lookerServerPortKey = 'Looker Server Port';
 
 export function activate(context: vscode.ExtensionContext) {
-
+	
 	var apiReady = false;
+	
+	const options = {};
+	glob(`${vscode.workspace.rootPath}/**/*.view.lkml`, options, function (err: any, files: any) {
+		findAllFieldNamesInWorkspace(files).then(result => {
+			console.log(result);
+		});
+		// TODO: Should errors be handled? Maybe Unix.
+  	});
 
 	vscode.window.showInformationMessage('Welcome good Looker!');
 	
@@ -157,3 +168,36 @@ function getLookerAPICredentials() {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+async function findAllFieldNamesInWorkspace(filePaths: string[]) {
+	return new Promise(async function(resolve, reject) {
+		var fields: String[] = [];
+		for (const filePath of filePaths) {
+			await readFile(filePath, fields);
+		}
+		resolve(fields);
+	});	
+}
+
+function readFile(filePath: string, fields: String[]) {
+	return new Promise(async function(resolve, reject) {
+		
+		fs.readFile(filePath, 
+			'utf-8',
+			await function read(err, data) {
+
+				if (err) {
+					throw err;
+				}
+				let lines = data.split('\n');
+				for (const line of lines) {
+					if (line.includes('measure:') || line.includes('dimension:') || line.includes('filter:') || line.includes('parameter:')) {
+						var field = line.substring(line.indexOf(':') + 1, line.indexOf('{') - 1).trim();
+						field = field.replace('[^a-zA-Z0-9_-]g','');
+						fields.push(field);
+					}
+				}
+				resolve(fields);
+			});
+	});
+}
