@@ -6,7 +6,6 @@ import * as glob from 'glob';
 
 export class ParseWorkspaceLookmlFiles {
     private constructor() {}
-
     public static getFieldNames(workspacePath: String) {
         return new Promise((resolve, reject) => {
             const options = {};
