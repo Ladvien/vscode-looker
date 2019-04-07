@@ -1,26 +1,45 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as glob from 'glob';
-import Axios from 'axios';
 import { LookML } from './workspace-tools/parse-lookml';
 import { LookerServices, LookerApiCredentials, LookerCredentialKeys } from './looker-api/looker-services';
 
 export function activate(context: vscode.ExtensionContext) {
 	
+	vscode.window.showInformationMessage('Welcome good Looker!');
+	
 	let looker = new LookerServices();
 	let lookml = new LookML();
-	var fields;
 	
 	lookml.parseWorkspaceLookmlFiles(vscode.workspace.rootPath || '').then((result) =>{
-		fields = result;
 		// TODO: Add view name
 		// TODO: Line number.
 		// TODO: Add fields to intellisense.
 		// TODO: Peek / Goto
-		// console.log(result);
+		// TODO: Check result.
 	});
+
+	const lookmlProvider = vscode.languages.registerCompletionItemProvider('lookml',
+	{
+		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+			
+			let lineOfInterest = document.lineAt(position);
+			let candidateString = lineOfInterest.text.substring(position.character - 2, position.character);
+			if (candidateString === '${') {
+				let completionItems: vscode.CompletionItem[] = [];
+				for (let viewName of lookml.views.map(({ name }) => name)) {
+					completionItems.push(new vscode.CompletionItem(String(viewName), vscode.CompletionItemKind.Field));
+				}
+				return completionItems;
+			} else {
+				return [];
+			}
+		}
+	},
+	'{');
+
+
 	
-	vscode.window.showInformationMessage('Welcome good Looker!');
 	
 	// Retrieve API credentials, if stored.
 	looker.getLookerAPICredentials().then((result: any) => {
@@ -80,7 +99,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// });
 	});
 
-	context.subscriptions.push(savePassword, apiLogin);
+	context.subscriptions.push(savePassword, apiLogin, lookmlProvider);
 }
 
 // this method is called when your extension is deactivated

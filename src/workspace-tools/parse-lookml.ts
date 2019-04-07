@@ -45,14 +45,15 @@ export class LookML {
             const options = {};
             glob(`${workspacePath}/**/*.view.lkml`, options, function (err: any, files: any) {
                 self.findAllFieldNamesInWorkspace(files).then(result => {
-					fs.writeFile("./view.json", JSON.stringify(self.views, undefined, 4), {mode: 0o777, flag: 'w+' }, (err) => {
-						if (err) {
-							console.error(err);
-							return;
-						};
-						console.log("File has been created");
-					});
-                    resolve(result);
+					// Debugging output.
+					// fs.writeFile("./view.json", JSON.stringify(self.views, undefined, 4), {mode: 0o777, flag: 'w+' }, (err) => {
+					// 	if (err) {
+					// 		console.error(err);
+					// 		return;
+					// 	}
+					// 	console.log("File has been created");
+					// });
+                    resolve(); // TODO: Return number found to let user know if succesful.
                 });
                 // TODO: Should errors be handled? Maybe Unix.
               });            
@@ -62,11 +63,10 @@ export class LookML {
 	private async findAllFieldNamesInWorkspace(filePaths: string[]) {
 		let self = this;
 		return new Promise(async function(resolve, reject) {
-			var fields: String[] = [];
 			for (const filePath of filePaths) {
 				await self.readFile(filePath);
 			}
-			resolve(fields);
+			resolve();
 		});	
 	}
 	

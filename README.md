@@ -7,11 +7,12 @@ A Visual Studio Code extension meant to aid in the development of LookML -- [Loo
 
 ### Implemented:
 * Syntax highlighting with embedded SQL
+![](https://raw.githubusercontent.com/Ladvien/vscode-looker/master/docs/lookml-example.png)
 * Storing and retrieval of Looker API credentials.
 * Looker API Login.
 * Parse workspace for field names
-  
-![](https://raw.githubusercontent.com/Ladvien/vscode-looker/master/docs/lookml-example.png)
+* Auto suggest view names
+![Image](./docs/vscode-looker-auto-complete.gif)
 
 ### Planned
 * Use of API.  For example, running SQL queries directly from Visual Studio Code using [Run SQL Runner Query](https://docs.looker.com/reference/api-and-integration/api-reference/v3.1/sql-query#run_sql_runner_query).  SQL can be selected, sent to this endpoint, and the result saved to a temporary folder, where it could be viewed with a tabular data viewer like the VScode [Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer) extension.
