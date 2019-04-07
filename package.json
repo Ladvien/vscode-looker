@@ -2,7 +2,7 @@
     "name": "looker",
     "displayName": "looker",
     "description": "Tools to aid development of LookML",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "engines": {
         "vscode": "^1.32.0"
     },
