@@ -2,18 +2,22 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import Axios from 'axios';
-import { ParseWorkspaceLookmlFiles } from './workspace-tools/parse-lookml';
+import { LookML } from './workspace-tools/parse-lookml';
 import { LookerServices, LookerApiCredentials, LookerCredentialKeys } from './looker-api/looker-services';
 
 export function activate(context: vscode.ExtensionContext) {
 	
 	let looker = new LookerServices();
+	let lookml = new LookML();
 	var fields;
 	
-	ParseWorkspaceLookmlFiles.getFieldNames(vscode.workspace.rootPath || '').then((result) =>{
+	lookml.parseWorkspaceLookmlFiles(vscode.workspace.rootPath || '').then((result) =>{
 		fields = result;
+		// TODO: Add view name
+		// TODO: Line number.
 		// TODO: Add fields to intellisense.
-		// TODO: "Peek to"
+		// TODO: Peek / Goto
+		// console.log(result);
 	});
 	
 	vscode.window.showInformationMessage('Welcome good Looker!');
