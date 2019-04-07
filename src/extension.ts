@@ -11,6 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let looker = new LookerServices();
 	let lookml = new LookML();
 	
+	// Prepare auto-completion.
 	lookml.parseWorkspaceLookmlFiles(vscode.workspace.rootPath || '').then((result) =>{
 		// TODO: Add view name
 		// TODO: Line number.
@@ -19,7 +20,15 @@ export function activate(context: vscode.ExtensionContext) {
 		// TODO: Check result.
 	});
 
-	const lookmlProvider = vscode.languages.registerCompletionItemProvider('lookml',
+	// Retrieve API credentials, if stored.
+	looker.getLookerAPICredentials().then((result: any) => {
+		vscode.window.showInformationMessage(result['success']);
+	}).catch((reason) => {
+		vscode.window.showErrorMessage(reason['error']);
+	});
+	
+	// Auto-completion providers.
+	const viewNameProvider = vscode.languages.registerCompletionItemProvider('lookml',
 	{
 		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
 			
@@ -38,15 +47,41 @@ export function activate(context: vscode.ExtensionContext) {
 	},
 	'{');
 
+	const fieldNameProvider = vscode.languages.registerCompletionItemProvider('lookml',
+	{
+		provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
+			
+			let lineOfInterest = document.lineAt(position);
+			let candidateString = lineOfInterest.text.substring(0, position.character);
+			let numberOfOpenCurlysBefore = candidateString.replace(/[^\{]/g, "").length;
+			let numberOfCloseCurlysBefore = candidateString.replace(/[^\}]/g, "").length;
+			
+			// Only show field names if inside a view completion.
+			if(numberOfOpenCurlysBefore > numberOfCloseCurlysBefore) {
+				
+				let completionItems: vscode.CompletionItem[] = [];
+				let indexOfLastClosedCurly = candidateString.lastIndexOf('{');
+				let indexOfLastTrigger = candidateString.lastIndexOf('.');
+				
+				// Only trigger if inside view completion.
+				if (indexOfLastClosedCurly > -1 && indexOfLastTrigger > -1) {
+					let viewName = candidateString.substring(indexOfLastClosedCurly + 1, indexOfLastTrigger);
+					var view = lookml.views.find(function(element) {
+						return element.name === viewName;
+					});
+					if (view) {
+						for (let fieldName of view.fields.map(({ name }) => name)) {
+							completionItems.push(new vscode.CompletionItem(String(fieldName), vscode.CompletionItemKind.Field));
+						}
+						return completionItems;					
+					}
+				}
 
-	
-	
-	// Retrieve API credentials, if stored.
-	looker.getLookerAPICredentials().then((result: any) => {
-		vscode.window.showInformationMessage(result['success']);
-	}).catch((reason) => {
-		vscode.window.showErrorMessage(reason['error']);
-	});
+			}
+			return [];
+		}
+	},
+	'.');
 
 	// Commands
 	let savePassword = vscode.commands.registerCommand('looker.savePassword', async () => {
@@ -99,7 +134,10 @@ export function activate(context: vscode.ExtensionContext) {
 		// });
 	});
 
-	context.subscriptions.push(savePassword, apiLogin, lookmlProvider);
+	context.subscriptions.push(savePassword, 
+								apiLogin, 
+								viewNameProvider, 
+								fieldNameProvider);
 }
 
 // this method is called when your extension is deactivated
