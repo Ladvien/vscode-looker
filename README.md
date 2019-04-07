@@ -17,7 +17,7 @@ A Visual Studio Code extension meant to aid in the development of LookML -- [Loo
 #### Snippets
 `dim` + Tab
 ```
-	dimension: name {
+dimension: name {
     label: "Readable Dimension Name"
     description: "Description of the dimension"
     type: type
