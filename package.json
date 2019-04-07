@@ -46,7 +46,13 @@
                     "meta.embedded.block.sql": "source.sql"
                 }
             }
-        ]
+        ],
+        "snippets": [
+			{
+				"language": "lookml",
+				"path": "./snippets/snippets.json"
+			}
+		]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
