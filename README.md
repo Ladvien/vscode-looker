@@ -15,6 +15,9 @@ A Visual Studio Code extension meant to aid in the development of LookML -- [Loo
 ![Image](./docs/vscode-looker-auto-complete.gif)
 
 #### Snippets
+Useful templated code shortcuts.
+![](./docs/vscode-looker-snippet-example.gif)
+
 `dim` + Tab
 ```
 dimension: name {
