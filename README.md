@@ -26,8 +26,27 @@ dimension: name {
     description: "Description of the dimension"
     type: type
     sql: SQL string ;;
-  }
+}
 ```
+`mes` + Tab
+```
+measure: name {
+    label: "Readable Dimension Name"
+    description: "Description of the dimension"
+    type: type
+    sql: SQL string ;;
+}
+```
+`fil` + Tab
+```
+filter: name {
+    label: "Readable Filter Name"
+    description: "Description of the filter"
+    type: string
+    suggest_dimension: id
+    suggest_persist_for: "24 hours"
+}
+``
 
 ### Planned
 * Use of API.  For example, running SQL queries directly from Visual Studio Code using [Run SQL Runner Query](https://docs.looker.com/reference/api-and-integration/api-reference/v3.1/sql-query#run_sql_runner_query).  SQL can be selected, sent to this endpoint, and the result saved to a temporary folder, where it could be viewed with a tabular data viewer like the VScode [Excel Viewer](https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer) extension.
