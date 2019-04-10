@@ -2,37 +2,37 @@
 	"Dimension": {
 		"prefix": "dim",
 		"body": [
-            "\tdimension: ${1:name} {",
+            "dimension: ${1:name} {",
             "\t\tlabel: \"${2:Readable Dimension Name}\"",
             "\t\tdescription: \"${3:Description of the dimension}\"",
             "\t\ttype: ${4:type}",
             "\t\tsql: ${5:SQL string} ;;",
-            "\t}"
+            "}"
 		],
 		"description": "Create Looker dimension."
     },
     "Measure": {
 		"prefix": "mes",
 		"body": [
-            "\tmeasure: ${1:name} {",
+            "measure: ${1:name} {",
             "\t\tlabel: \"${2:Readable Dimension Name}\"",
             "\t\tdescription: \"${3:Description of the dimension}\"",
             "\t\ttype: ${4:type}",
             "\t\tsql: ${5:SQL string} ;;",
-            "\t}"
+            "}"
 		],
 		"description": "Create Looker measure."
     },
     "Filter": {
 		"prefix": "fil",
 		"body": [
-            "\tfilter: ${1:name} {",
+            "filter: ${1:name} {",
             "\t\tlabel: \"${2:Readable Filter Name}\"",
             "\t\tdescription: \"${3:Description of the filter}\"",
             "\t\ttype: ${4:string}",
             "\t\tsuggest_dimension: ${5:id}",
             "\t\tsuggest_persist_for: \"${6:24 hours}\"",
-            "\t}"
+            "}"
 		],
 		"description": "Create Looker dimension."
 	}

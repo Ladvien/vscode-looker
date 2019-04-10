@@ -99,6 +99,10 @@
 					"match": "#."
 				}
 			]
+		},
+		"sets": {
+			"nameContent": "source.",
+			"patterns": []
 		}
 	},
 	"scopeName": "source.lkml"

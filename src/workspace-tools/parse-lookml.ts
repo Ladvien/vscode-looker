@@ -61,21 +61,20 @@ export class LookML {
 	}
 
 	private async findAllFieldNamesInWorkspace(filePaths: string[]) {
-		let self = this;
-		return new Promise(async function(resolve, reject) {
+		return new Promise(async (resolve, reject) => {
 			for (const filePath of filePaths) {
-				await self.readFile(filePath);
+				await this.readFile(filePath);
 			}
 			resolve();
 		});	
 	}
 	
 	private readFile(filePath: string) {
-		let self = this;
-		return new Promise(async function(resolve, reject) {
+		return new Promise(async (resolve, reject) => {
 			fs.readFile(filePath, 
 				'utf-8',
-				await function read(err, data) {
+				await (async (err, data) => {
+					
 					if (err) {
 						throw err;
 					}
@@ -111,7 +110,7 @@ export class LookML {
 						if (line.includes('view:')) {
 							parentType = LookmlParentType.view;
 							view = {
-								'name': self.extractName(line),
+								'name': this.extractName(line),
 								'fields': [],
 								'fileName': filename,
 								'lineNumber': Number(i)
@@ -119,7 +118,7 @@ export class LookML {
 							continue;
 						} else if (line.includes('explore:')) {
 							explore = {
-								'name': self.extractName(line),
+								'name': this.extractName(line),
 								'fields': [],
 								'fileName': filename,
 								'lineNumber': Number(i)
@@ -130,8 +129,8 @@ export class LookML {
 						if (line.includes('measure:') || line.includes('dimension:') || line.includes('filter:') 
 						 || line.includes('parameter:') || line.includes('join:')) {
 							let lookmlField: LookmlField = {
-								'name': self.extractName(line),
-								'type': self.extractType(line),
+								'name': this.extractName(line),
+								'type': this.extractType(line),
 								'lineNumber': Number(i),
 								'viewName': view.name,
 								'fileName': filename
@@ -152,13 +151,13 @@ export class LookML {
 						}
 					} // End lines loop
 					if (view.name !== 'unknown') {
-						self.views.push(view);
+						this.views.push(view);
 					}
 					if (explore.name !== 'unknown') {
-						self.explores.push(explore);
+						this.explores.push(explore);
 					}
 					resolve();
-				});
+				}));
 		});
 	}
 
