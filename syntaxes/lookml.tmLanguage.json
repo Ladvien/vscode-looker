@@ -3,44 +3,54 @@
 	"name": "LookML",
 	"patterns": [
 		{
-			"include": "#fields"
-		},
-		{
-			"include": "#sql"
-		},
-		{
-			"include": "#variables"
-		},
-		{
-			"include": "#strings"
+			"include": "#field"
 		},
 		{
 			"include": "#comment-line"
 		},
 		{
-			"include": "#types"
+			"include": "#derivedTable"
 		}
 	],
 	"repository": {
-		"fields": {
-			"contentName": "source.lookml.test",
+		"field": {
+			"contentName": "source.lookml.field",
 			"begin": "(dimension:|measure:|filter:|paremter:).*?{",
 			"end": "}\\n",
 			"beginCaptures": {
 				"0": {
 					"patterns": [{
-						"match": "\\b(dimension|measure|filter|parameter)\\b",
+						"match": "\\b(dimension|measure|filter|parameter|derived_table|dimension_group)\\b",
 						"name": "keyword.control.lookml"
 					}]
 				}
 			},
 			"patterns": [{
-				"name": "keyword.control.lookml",
-				"match": "\\b()\\b"
-			}]
+				"name": "variable.parameter.lookml",
+				"match": "\\b(intervals|timeframes|action|drill_fields|tags|alias|alpha_sort|description|group_label|group_item_label|hidden|label|label_from_parameter|order_by_field|style|view_label|can_filter|case_sensitive|filters|skip_drill_filter|allowed_value|bypass_suggest_restrictions|full_suggestions|suggest_dimension|suggest_explore|suggest_persist_for|suggestable|suggestions|approximate|approximate_threshold|convert_tz|datatype|fanout_on|precision|primary_key|required_access_grants|sql_distinct_key|case|default_value|direction|end_location_field|html|list_field|percentile|sql|sql_end|sql_latitude|sql_longitude|sql_start|start_location_field|tiers|type|units|value_format|value_format_name|allow_fill|map_layer_name|decimals|format)\\b"
+				},
+				{
+					"include": "#sql"
+				},
+				{
+					"include": "#variables"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#comment-line"
+				},
+				{
+					"include": "#types"
+				},
+				{
+					"#include": "#link"
+				}
+			]
 		},
 		"variables": {
-			"name": "source.lookml.variable.language",
+			"name": "support.variable",
 			"match": "\\${.*?}",
 			"patterns": [{
 				"name": "constant.character.escape.lookml",
@@ -110,9 +120,52 @@
 				}
 			]
 		},
+		"derivedTable": {
+			"name": "source.lookml.derived_table",
+			"begin": "(derived_table:).*?{",
+			"end": "}\\n",
+			"beginCaptures": {
+				"0": {
+					"patterns": [{
+						"match": "derived_table",
+						"name": "keyword.control.lookml"
+					}]
+				}
+			},
+			"patterns": [
+				{
+					"match": "indexes",
+					"name": "keyword.control.indexes"
+				},
+				{
+					"include": "#fields"
+				},
+				{
+					"include": "#sql"
+				},
+				{
+					"include": "#variables"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#comment-line"
+				},
+				{
+					"include": "#types"
+				}
+			]
+		},
 		"sets": {
 			"nameContent": "source.",
 			"patterns": []
+		},
+		"link": {
+			"name": "test",
+			"begin": "(link:).*?\\{",
+			"end": "}\\n",
+			"patterns": []			
 		}
 	},
 	"scopeName": "source.lkml"
