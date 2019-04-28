@@ -14,9 +14,9 @@
 	],
 	"repository": {
 		"field": {
-			"contentName": "source.lookml.field",
-			"begin": "(dimension:|measure:|filter:|paremter:).*?{",
-			"end": "}\\n",
+			"name": "source.lookml.field",
+			"begin": "bar",
+			"end": "(}(?:[\\s]*(?:(dimension|measure|filter|parameter|derived_table|dimension_group)))?)",
 			"beginCaptures": {
 				"0": {
 					"patterns": [{
