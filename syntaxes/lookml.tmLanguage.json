@@ -15,14 +15,24 @@
 	"repository": {
 		"field": {
 			"name": "source.lookml.field",
-			"begin": "bar",
-			"end": "(}(?:[\\s]*(?:(dimension|measure|filter|parameter|derived_table|dimension_group)))?)",
-			"beginCaptures": {
+			"begin": "(?:dimension:|measure:|filter:|parameter:|dimension_group:).*\\{",
+			"end": "(?=([\\s]*?)(?:dimension|dimension_group|sql_table_name))",
+			"captures": {
 				"0": {
-					"patterns": [{
-						"match": "\\b(dimension|measure|filter|parameter|derived_table|dimension_group)\\b",
-						"name": "keyword.control.lookml"
-					}]
+					"patterns": [
+						{ 
+							"name": "keyword.control.test0",
+							"match": "dimension"
+						}
+					]
+				},
+				"1": {
+					"name": "keyword.operator.test1",
+					"patterns": []
+				},
+				"3": {
+					"name": "keyword.other.test2",
+					"patterns": []
 				}
 			},
 			"patterns": [{
