@@ -1,3 +1,6 @@
+# Project State
+Currently, I have stopped work on this project for about a year.  Primarily, due to time.  I've many ideas for useful tools, however, the whole project depends on a LookML language grammar, written in [TextMate](https://macromates.com/manual/en/language_grammars), using regex, in a VSCode formatted file.  In short, it is _extremely_ tedious and time intensive to get right.  So! I'll only continue work if many people feel it would be useful.  And I'd appreciate help with defining the LookML grammar (regex masters appreciated).
+
 # Looker Visual Studio Code Extension
 A Visual Studio Code extension meant to aid in the development of LookML -- [Looker's](https://looker.com/product/business-intelligence) custom markup language.
 * [What is LookML?](https://docs.looker.com/data-modeling/learning-lookml/what-is-lookml)
